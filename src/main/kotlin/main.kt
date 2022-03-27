@@ -1,6 +1,6 @@
 fun main() {
-    var time: Int = 12 * 60 * 60 // in sec
-    print("был(а) ${doPluralFormOfTime(agoToText(time), time)}")
+    val time: Int = 12 * 60 * 60 // in sec
+    print("был(а) ${agoToText(time)}")
 }
 
 fun agoToText(time: Int): String {
@@ -8,21 +8,8 @@ fun agoToText(time: Int): String {
         return ""
     }
     return when (time) {
-        in 0..60 -> "sec"
-        in 61..60 * 60 -> "min"
-        in (60 * 60 + 1)..(24 * 60 * 60) -> "hour"
-        in (24 * 60 * 60 + 1)..(2 * 24 * 60 * 60) -> "today"
-        in (2 * 24 * 60 * 60 + 1)..(3 * 24 * 60 * 60) -> "yesterday"
-        else -> "long"
-    }
-}
-
-fun doPluralFormOfTime(str: String, time: Int): String {
-    return when (str) {
-        "sec" -> {
-            "только что"
-        }
-        "min" -> {
+        in 0..60 -> "только что"
+        in 61..60 * 60 -> {
             when (time / 60 % 10) {
                 0, 5, 6, 7, 8, 9 -> "${time / 60} минут назад"
                 1 -> "${time / 60} минуту назад"
@@ -30,7 +17,7 @@ fun doPluralFormOfTime(str: String, time: Int): String {
                 else -> ""
             }
         }
-        "hour" -> {
+        in (60 * 60 + 1)..(24 * 60 * 60) -> {
             when (time / 60 / 60 % 100) {
                 11, 12, 13, 14 -> "${time / 60 / 60} часов назад"
                 else -> when (time / 60 / 60 % 10) {
@@ -41,8 +28,8 @@ fun doPluralFormOfTime(str: String, time: Int): String {
                 }
             }
         }
-        "today" -> "сегодня"
-        "yesterday" -> "вчера"
+        in (24 * 60 * 60 + 1)..(2 * 24 * 60 * 60) -> "сегодня"
+        in (2 * 24 * 60 * 60 + 1)..(3 * 24 * 60 * 60) -> "вчера"
         else -> "давно"
     }
 }
